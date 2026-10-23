@@ -1,3 +1,25 @@
-[gd_scene format=3 uid="uid://bkhkls1mrjc5w"]
+[gd_scene load_steps=5 format=3 uid="uid://bkhkls1mrjc5w"]
+
+[ext_resource type="Shader" uid="uid://wkohj584vpem" path="res://Assets/Shaders/retro_cam.gdshader" id="1_28flt"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_48xlc"]
+shader = ExtResource("1_28flt")
+shader_parameter/pixel_size = 3.0
+shader_parameter/vhs_intensity = 3.0
+shader_parameter/noise_intensity = 0.05
+shader_parameter/opacity = 0.25
+
+[sub_resource type="Gradient" id="Gradient_1ehe0"]
+colors = PackedColorArray(0, 0, 0, 1, 0, 0, 0, 1)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_ce3w2"]
+gradient = SubResource("Gradient_1ehe0")
+width = 1280
+height = 720
 
 [node name="Node2D" type="Node2D"]
+
+[node name="RetroShader" type="Sprite2D" parent="."]
+material = SubResource("ShaderMaterial_48xlc")
+texture = SubResource("GradientTexture2D_ce3w2")
+centered = false

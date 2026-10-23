@@ -1,15 +1,32 @@
-[gd_scene load_steps=3 format=3 uid="uid://bgmut7a0k248x"]
+[gd_scene load_steps=7 format=3 uid="uid://bgmut7a0k248x"]
 
+[ext_resource type="Shader" uid="uid://wkohj584vpem" path="res://Assets/Shaders/retro_cam.gdshader" id="1_ht4rx"]
 [ext_resource type="Script" uid="uid://bjkg4svmt5mku" path="res://Scripts/Utils/Scroll.gd" id="1_jtjkd"]
 [ext_resource type="Texture2D" uid="uid://dd006khsgcnfb" path="res://icon.svg" id="2_ht4rx"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_u7uub"]
+shader = ExtResource("1_ht4rx")
+shader_parameter/pixel_size = 3.0
+shader_parameter/vhs_intensity = 3.0
+shader_parameter/noise_intensity = 0.15
+shader_parameter/opacity = 0.5
+
+[sub_resource type="Gradient" id="Gradient_jtjkd"]
+colors = PackedColorArray(0, 0, 0, 1, 0, 0, 0, 1)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_ht4rx"]
+gradient = SubResource("Gradient_jtjkd")
+width = 1280
+height = 720
 
 [node name="GameLevel" type="Node2D"]
 
 [node name="Background" type="Node" parent="."]
 
 [node name="ParallaxSlide" type="Parallax2D" parent="Background"]
+material = SubResource("ShaderMaterial_u7uub")
 scroll_scale = Vector2(0, 1)
-scroll_offset = Vector2(264, 0)
+scroll_offset = Vector2(300, 0)
 repeat_size = Vector2(0, 640)
 repeat_times = 2
 script = ExtResource("1_jtjkd")
@@ -20,3 +37,6 @@ texture = ExtResource("2_ht4rx")
 centered = false
 
 [node name="Black_Base" type="Sprite2D" parent="Background"]
+z_index = -1
+texture = SubResource("GradientTexture2D_ht4rx")
+centered = false
