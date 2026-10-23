@@ -1,0 +1,22 @@
+[gd_scene load_steps=3 format=3 uid="uid://bgmut7a0k248x"]
+
+[ext_resource type="Script" uid="uid://bjkg4svmt5mku" path="res://Scripts/Utils/Scroll.gd" id="1_jtjkd"]
+[ext_resource type="Texture2D" uid="uid://dd006khsgcnfb" path="res://icon.svg" id="2_ht4rx"]
+
+[node name="GameLevel" type="Node2D"]
+
+[node name="Background" type="Node" parent="."]
+
+[node name="ParallaxSlide" type="Parallax2D" parent="Background"]
+scroll_scale = Vector2(0, 1)
+scroll_offset = Vector2(264, 0)
+repeat_size = Vector2(0, 640)
+repeat_times = 2
+script = ExtResource("1_jtjkd")
+
+[node name="Sprite2D" type="Sprite2D" parent="Background/ParallaxSlide"]
+scale = Vector2(5, 5)
+texture = ExtResource("2_ht4rx")
+centered = false
+
+[node name="Black_Base" type="Sprite2D" parent="Background"]
