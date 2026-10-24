@@ -1,5 +1,18 @@
-[gd_scene format=3 uid="uid://ccytset8jxtfc"]
+[gd_scene load_steps=4 format=3 uid="uid://ccytset8jxtfc"]
+
+[ext_resource type="FontFile" uid="uid://bko22g7t631eo" path="res://Assets/Fonts/Andika-Italic.ttf" id="1_071vn"]
+[ext_resource type="Script" uid="uid://da4jxm3b6b2de" path="res://Scripts/Level/MemoryText.gd" id="2_fe4v7"]
+
+[sub_resource type="LabelSettings" id="LabelSettings_fe4v7"]
+font = ExtResource("1_071vn")
 
 [node name="MemoryText" type="Label"]
-offset_right = 40.0
-offset_bottom = 23.0
+offset_right = 150.0
+offset_bottom = 60.0
+pivot_offset = Vector2(75, 30)
+text = "test"
+label_settings = SubResource("LabelSettings_fe4v7")
+horizontal_alignment = 1
+vertical_alignment = 1
+autowrap_mode = 2
+script = ExtResource("2_fe4v7")
