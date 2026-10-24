@@ -1,12 +1,19 @@
 [gd_scene load_steps=12 format=3 uid="uid://bgmut7a0k248x"]
 
 [ext_resource type="Shader" uid="uid://wkohj584vpem" path="res://Assets/Shaders/retro_cam.gdshader" id="1_ht4rx"]
-[ext_resource type="Script" uid="uid://bjkg4svmt5mku" path="res://Scripts/Utils/Scroll.gd" id="1_jtjkd"]
 [ext_resource type="Script" uid="uid://d2j783ui8q6bi" path="res://Scripts/Level/GameManager.gd" id="1_u7uub"]
 [ext_resource type="Texture2D" uid="uid://dd006khsgcnfb" path="res://icon.svg" id="2_ht4rx"]
 [ext_resource type="Script" uid="uid://ck2o7ugjkvq54" path="res://Scripts/Level/MemorySpawner.gd" id="5_mql7d"]
 [ext_resource type="Script" uid="uid://coio5ep7267ng" path="res://Scripts/Level/ShardSpawner.gd" id="6_5x8s8"]
 [ext_resource type="Texture2D" uid="uid://crgp5ph3m0rt" path="res://Assets/Sprites/BlackCircle.png" id="7_5x8s8"]
+[ext_resource type="PackedScene" uid="uid://cfeext8w7uuko" path="res://Assets/Prefabs/Player.tscn" id="8_player"]
+[ext_resource type="Script" uid="uid://gqxdtm7sa2p6" path="res://Scripts/Level/VerticalFollowCamera.gd" id="9_camera"]
+
+[sub_resource type="WorldBoundaryShape2D" id="LeftWallShape"]
+normal = Vector2(1, 0)
+
+[sub_resource type="WorldBoundaryShape2D" id="RightWallShape"]
+normal = Vector2(-1, 0)
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_u7uub"]
 shader = ExtResource("1_ht4rx")
@@ -15,54 +22,49 @@ shader_parameter/vhs_intensity = 3.0
 shader_parameter/noise_intensity = 0.15
 shader_parameter/opacity = 0.5
 
-[sub_resource type="Gradient" id="Gradient_jtjkd"]
-colors = PackedColorArray(0, 0, 0, 1, 0, 0, 0, 1)
-
-[sub_resource type="GradientTexture2D" id="GradientTexture2D_ht4rx"]
-gradient = SubResource("Gradient_jtjkd")
-width = 1280
-height = 720
-
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_ht4rx"]
-
 [node name="GameLevel" type="Node2D" groups=["GameManager"]]
 script = ExtResource("1_u7uub")
 
 [node name="Background" type="Node" parent="."]
 
 [node name="ParallaxSlide" type="Parallax2D" parent="Background"]
-material = SubResource("ShaderMaterial_u7uub")
 scroll_scale = Vector2(0, 1)
 scroll_offset = Vector2(391, 0)
 repeat_size = Vector2(0, 716.8)
 repeat_times = 2
-script = ExtResource("1_jtjkd")
 
 [node name="Sprite2D" type="Sprite2D" parent="Background/ParallaxSlide"]
 scale = Vector2(4, 5.6)
 texture = ExtResource("2_ht4rx")
 centered = false
 
-[node name="Black_Base" type="Sprite2D" parent="Background"]
-z_index = -1
-texture = SubResource("GradientTexture2D_ht4rx")
-centered = false
+[node name="ScreenBackground" type="CanvasLayer" parent="."]
+layer = -1
+
+[node name="Black_Base" type="ColorRect" parent="ScreenBackground"]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+color = Color(0, 0, 0, 1)
 
 [node name="Collisions" type="Node" parent="."]
 
 [node name="LeftWall" type="StaticBody2D" parent="Collisions"]
-position = Vector2(361, 377)
-scale = Vector2(3, 50)
+position = Vector2(377, 0)
+collision_layer = 2
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Collisions/LeftWall"]
-shape = SubResource("RectangleShape2D_ht4rx")
+shape = SubResource("LeftWallShape")
 
 [node name="RightWall" type="StaticBody2D" parent="Collisions"]
-position = Vector2(935, 377)
-scale = Vector2(3, 50)
+position = Vector2(919, 0)
+collision_layer = 2
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Collisions/RightWall"]
-shape = SubResource("RectangleShape2D_ht4rx")
+shape = SubResource("RightWallShape")
 
 [node name="FastTimer" type="Timer" parent="."]
 
@@ -77,7 +79,26 @@ bad_shard_sprite = Array[Texture]([ExtResource("7_5x8s8")])
 [node name="SpawnTimer" type="Timer" parent="ShardSpawner"]
 wait_time = 3.0
 
-[connection signal="bad_memory" from="." to="MemoryTextSpawner" method="_on_game_level_bad_memory"]
-[connection signal="good_memory" from="." to="MemoryTextSpawner" method="_on_game_level_good_memory"]
+[node name="Player" parent="." instance=ExtResource("8_player")]
+position = Vector2(640, 360)
+
+[node name="VerticalCamera" type="Camera2D" parent="." node_paths=PackedStringArray("target")]
+position = Vector2(640, 360)
+process_callback = 0
+script = ExtResource("9_camera")
+target = NodePath("../Player")
+
+[node name="ScreenEffects" type="CanvasLayer" parent="."]
+layer = 5
+
+[node name="RetroEffect" type="ColorRect" parent="ScreenEffects"]
+material = SubResource("ShaderMaterial_u7uub")
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+
 [connection signal="timeout" from="FastTimer" to="." method="_on_fast_timer_timeout"]
 [connection signal="timeout" from="ShardSpawner/SpawnTimer" to="ShardSpawner" method="_on_spawn_timer_timeout"]
