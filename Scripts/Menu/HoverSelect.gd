@@ -7,8 +7,14 @@ var current_tween : Tween = null
 @onready var darknessShader = $SlideEntranceSprite/DarknessShader
 @onready var darknessShape = $SlideEntranceSprite
 @onready var enterText = $StartText
+@onready var milkPlush = $PlushReward
+@onready var childHead = $ChildHead
 
 signal enter_slide
+
+func _ready() -> void:
+	if GameVariables.completed_milk():
+		milkPlush.visible = true
 
 func _on_mouse_entered() -> void:
 	if isClick:
@@ -20,7 +26,7 @@ func _on_mouse_entered() -> void:
 	if not is_hovered or isClick:
 		return
 	
-	tween_movement(0.3, 6, darknessShader, show_text)
+	tween_movement(0.3, 3, darknessShader, show_text)
 
 func _on_mouse_exited() -> void:
 	if isClick:
@@ -43,6 +49,7 @@ func _on_input_event(viewport: Node, event: InputEvent, shape_idx: int) -> void:
 	if event is InputEventMouseButton and event.pressed:
 		if event.button_index == MOUSE_BUTTON_LEFT:
 			isClick = true
+			childHead.move_out()
 			darken_anim()
 
 func tween_movement(time : float, value : float, sprite : Sprite2D, callback: Callable = Callable()) -> void:

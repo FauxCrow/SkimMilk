@@ -1,3 +1,119 @@
-[gd_scene format=3 uid="uid://dtj4dk8qdremt"]
+[gd_scene load_steps=13 format=3 uid="uid://dtj4dk8qdremt"]
+
+[ext_resource type="Shader" uid="uid://wkohj584vpem" path="res://Assets/Shaders/retro_cam.gdshader" id="1_8ukdk"]
+[ext_resource type="FontFile" uid="uid://bko22g7t631eo" path="res://Assets/Fonts/Andika-Italic.ttf" id="3_sugvs"]
+[ext_resource type="Script" uid="uid://bk56c7oxt1qeq" path="res://Scripts/Utils/ButtonText.gd" id="4_stuce"]
+[ext_resource type="Script" uid="uid://cwf84r4ud5c3p" path="res://Scripts/End/EasterEgg.gd" id="5_ny5xi"]
+[ext_resource type="Texture2D" uid="uid://d23wvh1xmddh3" path="res://Assets/Images/Milks/photo_2026-10-24_18-21-53-removebg-preview.png" id="5_x6vlg"]
+[ext_resource type="Texture2D" uid="uid://ccdhk6787x7md" path="res://Assets/Images/Milks/photo_2026-10-24_18-21-54-removebg-preview.png" id="6_8ukdk"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_ryc6n"]
+shader = ExtResource("1_8ukdk")
+shader_parameter/pixel_size = 3.0
+shader_parameter/vhs_intensity = 3.0
+shader_parameter/noise_intensity = 0.05
+shader_parameter/opacity = 0.25
+
+[sub_resource type="Gradient" id="Gradient_c4ygt"]
+colors = PackedColorArray(0, 0, 0, 1, 0, 0, 0, 1)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_f5d75"]
+gradient = SubResource("Gradient_c4ygt")
+width = 1280
+height = 720
+
+[sub_resource type="LabelSettings" id="LabelSettings_b42hs"]
+font = ExtResource("3_sugvs")
+font_size = 32
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_vnv8g"]
+size = Vector2(159, 34)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_5glpi"]
 
 [node name="GoodEnding" type="Node2D"]
+
+[node name="RetroShader" type="Sprite2D" parent="."]
+z_index = 5
+material = SubResource("ShaderMaterial_ryc6n")
+texture = SubResource("GradientTexture2D_f5d75")
+centered = false
+
+[node name="SlidePhoto" type="Sprite2D" parent="."]
+z_index = -5
+position = Vector2(0, -5)
+scale = Vector2(0.5, 0.5)
+centered = false
+
+[node name="SummaryText" type="Label" parent="."]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 459.5
+offset_top = 72.0
+offset_right = 820.5
+offset_bottom = 181.0
+grow_horizontal = 2
+grow_vertical = 2
+text = "you made it out, fractured.
+darkness embraces you."
+label_settings = SubResource("LabelSettings_b42hs")
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="TryAgain" type="Area2D" parent="."]
+position = Vector2(630, 485)
+script = ExtResource("4_stuce")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="TryAgain"]
+position = Vector2(11.5, 4)
+shape = SubResource("RectangleShape2D_vnv8g")
+
+[node name="TryAgainBtn" type="Label" parent="TryAgain"]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -103.0
+offset_top = -27.0
+offset_right = 123.0
+offset_bottom = 26.0
+grow_horizontal = 2
+grow_vertical = 2
+text = "play again?"
+label_settings = SubResource("LabelSettings_b42hs")
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="MilkEgg" type="Area2D" parent="."]
+position = Vector2(361, 264)
+script = ExtResource("5_ny5xi")
+index = 4
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="MilkEgg"]
+scale = Vector2(2, 4.5)
+shape = SubResource("RectangleShape2D_5glpi")
+
+[node name="Sprite2D" type="Sprite2D" parent="MilkEgg"]
+modulate = Color(1, 1, 1, 0.196078)
+scale = Vector2(0.25, 0.25)
+texture = ExtResource("5_x6vlg")
+
+[node name="MilkEgg2" type="Area2D" parent="."]
+position = Vector2(1162, 554)
+script = ExtResource("5_ny5xi")
+index = 5
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="MilkEgg2"]
+scale = Vector2(2, 4.5)
+shape = SubResource("RectangleShape2D_5glpi")
+
+[node name="Sprite2D" type="Sprite2D" parent="MilkEgg2"]
+modulate = Color(1, 1, 1, 0.294118)
+scale = Vector2(0.25, 0.25)
+texture = ExtResource("6_8ukdk")
+
+[connection signal="input_event" from="TryAgain" to="TryAgain" method="_on_input_event"]
+[connection signal="mouse_entered" from="TryAgain" to="TryAgain" method="_on_mouse_entered"]
+[connection signal="mouse_exited" from="TryAgain" to="TryAgain" method="_on_mouse_exited"]
+[connection signal="input_event" from="MilkEgg" to="MilkEgg" method="_on_input_event"]
+[connection signal="input_event" from="MilkEgg2" to="MilkEgg2" method="_on_input_event"]

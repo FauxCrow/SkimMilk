@@ -1,12 +1,15 @@
-[gd_scene load_steps=15 format=3 uid="uid://bkhkls1mrjc5w"]
+[gd_scene load_steps=19 format=3 uid="uid://bkhkls1mrjc5w"]
 
 [ext_resource type="Shader" uid="uid://wkohj584vpem" path="res://Assets/Shaders/retro_cam.gdshader" id="1_28flt"]
 [ext_resource type="Shader" uid="uid://ck4se8gfon8mn" path="res://Assets/Shaders/darkness.gdshader" id="2_1ehe0"]
-[ext_resource type="Texture2D" uid="uid://ciw3j3ufjgbdk" path="res://Assets/Images/Placeholders/temp_topSlide.jpeg" id="2_48xlc"]
 [ext_resource type="Texture2D" uid="uid://crgp5ph3m0rt" path="res://Assets/Sprites/BlackCircle.png" id="2_ce3w2"]
 [ext_resource type="Script" uid="uid://0fota7vpopv5" path="res://Scripts/Menu/ShowQuote.gd" id="3_cp0ys"]
 [ext_resource type="Script" uid="uid://cw351oi2pk32g" path="res://Scripts/Menu/HoverSelect.gd" id="3_n45e2"]
 [ext_resource type="FontFile" uid="uid://bko22g7t631eo" path="res://Assets/Fonts/Andika-Italic.ttf" id="3_opfnp"]
+[ext_resource type="Texture2D" uid="uid://bxvbnidf11s7" path="res://Assets/Images/main_bg.jpg" id="7_cp0ys"]
+[ext_resource type="Texture2D" uid="uid://bgsb0n477a45r" path="res://Assets/Images/child_head.png" id="7_yhxw7"]
+[ext_resource type="Texture2D" uid="uid://dja0vxgayt0o1" path="res://Assets/Images/Milks/milk_plush.png" id="8_yhxw7"]
+[ext_resource type="Script" uid="uid://c4wfrpqau04cc" path="res://Scripts/Menu/HeadAnim.gd" id="9_16hvj"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_48xlc"]
 shader = ExtResource("1_28flt")
@@ -15,13 +18,17 @@ shader_parameter/vhs_intensity = 3.0
 shader_parameter/noise_intensity = 0.05
 shader_parameter/opacity = 0.25
 
-[sub_resource type="Gradient" id="Gradient_1ehe0"]
+[sub_resource type="Gradient" id="Gradient_cp0ys"]
 colors = PackedColorArray(0, 0, 0, 1, 0, 0, 0, 1)
 
 [sub_resource type="GradientTexture2D" id="GradientTexture2D_ce3w2"]
-gradient = SubResource("Gradient_1ehe0")
+gradient = SubResource("Gradient_cp0ys")
 width = 1280
 height = 720
+
+[sub_resource type="LabelSettings" id="LabelSettings_yhxw7"]
+font = ExtResource("3_opfnp")
+font_size = 48
 
 [sub_resource type="LabelSettings" id="LabelSettings_opfnp"]
 font = ExtResource("3_opfnp")
@@ -47,6 +54,15 @@ z_index = 5
 material = SubResource("ShaderMaterial_48xlc")
 texture = SubResource("GradientTexture2D_ce3w2")
 centered = false
+
+[node name="Title" type="Label" parent="."]
+z_index = -2
+offset_left = 474.0
+offset_top = 19.0
+offset_right = 1077.0
+offset_bottom = 123.0
+text = "Skim    -    Milk"
+label_settings = SubResource("LabelSettings_yhxw7")
 
 [node name="QuoteText" type="Label" parent="."]
 anchors_preset = 15
@@ -77,7 +93,7 @@ position = Vector2(640, 360)
 script = ExtResource("3_n45e2")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="StartGameArea"]
-scale = Vector2(13, 13)
+scale = Vector2(25, 25)
 shape = SubResource("CircleShape2D_n45e2")
 
 [node name="StartText" type="Label" parent="StartGameArea"]
@@ -94,16 +110,34 @@ vertical_alignment = 1
 
 [node name="SlideEntranceSprite" type="Sprite2D" parent="StartGameArea"]
 z_index = -1
+scale = Vector2(2, 2)
 texture = ExtResource("2_ce3w2")
 
 [node name="DarknessShader" type="Sprite2D" parent="StartGameArea/SlideEntranceSprite"]
+z_index = -3
 material = SubResource("ShaderMaterial_ce3w2")
 texture = ExtResource("2_ce3w2")
 
+[node name="PlushReward" type="Sprite2D" parent="StartGameArea"]
+visible = false
+z_index = -1
+position = Vector2(-317, 277)
+rotation = -0.0698132
+scale = Vector2(0.3, 0.3)
+texture = ExtResource("8_yhxw7")
+
+[node name="ChildHead" type="Sprite2D" parent="StartGameArea"]
+z_index = -1
+position = Vector2(-51, 272)
+scale = Vector2(1.5, 1.5)
+texture = ExtResource("7_yhxw7")
+script = ExtResource("9_16hvj")
+
 [node name="SlidePhoto" type="Sprite2D" parent="."]
 z_index = -5
-scale = Vector2(1.89614, 1.58022)
-texture = ExtResource("2_48xlc")
+position = Vector2(0, -119)
+scale = Vector2(0.5, 0.5)
+texture = ExtResource("7_cp0ys")
 centered = false
 
 [connection signal="timeout" from="QuoteText/AppearTimer" to="QuoteText" method="_on_appear_timer_timeout"]
