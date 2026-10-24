@@ -27,7 +27,10 @@ func _physics_process(_delta: float) -> void:
 	if game_ended:
 		return
 	if player.get_collision_viewport_rect().end.y >= get_viewport().get_visible_rect().end.y:
-		game_lose()
+		game_ended = true
+		player.stop_movement()
+		$VerticalCamera.stop_scrolling()
+		call_deferred("game_lose")
 
 func game_setup() -> void:
 	var limits = GameVariables.win_requirements()
