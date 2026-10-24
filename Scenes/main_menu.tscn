@@ -59,9 +59,9 @@ centered = false
 z_index = -2
 offset_left = 474.0
 offset_top = 19.0
-offset_right = 1077.0
+offset_right = 784.0
 offset_bottom = 123.0
-text = "Skim    -    Milk"
+text = "Skim         Milk"
 label_settings = SubResource("LabelSettings_yhxw7")
 
 [node name="QuoteText" type="Label" parent="."]

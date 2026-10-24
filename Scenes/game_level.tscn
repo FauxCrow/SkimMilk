@@ -6,7 +6,7 @@
 [ext_resource type="Script" uid="uid://ck2o7ugjkvq54" path="res://Scripts/Level/MemorySpawner.gd" id="5_mql7d"]
 [ext_resource type="Script" uid="uid://coio5ep7267ng" path="res://Scripts/Level/ShardSpawner.gd" id="6_5x8s8"]
 [ext_resource type="Texture2D" uid="uid://crgp5ph3m0rt" path="res://Assets/Sprites/BlackCircle.png" id="7_5x8s8"]
-[ext_resource type="PackedScene" uid="uid://cfeext8w7uuko" path="res://Assets/Prefabs/Player.tscn" id="8_player"]
+[ext_resource type="PackedScene" uid="uid://cfii23lafgj6m" path="res://Assets/Prefabs/Player.tscn" id="8_player"]
 [ext_resource type="Script" uid="uid://gqxdtm7sa2p6" path="res://Scripts/Level/VerticalFollowCamera.gd" id="9_camera"]
 
 [sub_resource type="WorldBoundaryShape2D" id="LeftWallShape"]
@@ -50,6 +50,10 @@ grow_vertical = 2
 mouse_filter = 2
 color = Color(0, 0, 0, 1)
 
+[node name="MemoryTextSpawner" type="Node" parent="ScreenBackground"]
+script = ExtResource("5_mql7d")
+text_positions = Array[Vector2]([Vector2(50, 50), Vector2(100, 400), Vector2(200, 200), Vector2(50, 600), Vector2(150, 600), Vector2(200, 500), Vector2(1100, 600), Vector2(950, 400), Vector2(1000, 50), Vector2(1050, 500), Vector2(1000, 600), Vector2(1050, 200)])
+
 [node name="Collisions" type="Node" parent="."]
 
 [node name="LeftWall" type="StaticBody2D" parent="Collisions"]
@@ -68,16 +72,14 @@ shape = SubResource("RightWallShape")
 
 [node name="FastTimer" type="Timer" parent="."]
 
-[node name="MemoryTextSpawner" type="Node" parent="."]
-script = ExtResource("5_mql7d")
-
-[node name="ShardSpawner" type="Node" parent="."]
+[node name="ShardSpawner" type="Node" parent="." node_paths=PackedStringArray("camera")]
 script = ExtResource("6_5x8s8")
+camera = NodePath("../VerticalCamera")
 good_shard_sprite = Array[Texture]([ExtResource("7_5x8s8")])
 bad_shard_sprite = Array[Texture]([ExtResource("7_5x8s8")])
 
 [node name="SpawnTimer" type="Timer" parent="ShardSpawner"]
-wait_time = 3.0
+wait_time = 2.0
 
 [node name="Player" parent="." instance=ExtResource("8_player")]
 position = Vector2(640, 360)
@@ -90,6 +92,7 @@ target = NodePath("../Player")
 
 [node name="ScreenEffects" type="CanvasLayer" parent="."]
 layer = 5
+visible = false
 
 [node name="RetroEffect" type="ColorRect" parent="ScreenEffects"]
 material = SubResource("ShaderMaterial_u7uub")
@@ -100,5 +103,7 @@ grow_horizontal = 2
 grow_vertical = 2
 mouse_filter = 2
 
+[connection signal="bad_memory" from="." to="ScreenBackground/MemoryTextSpawner" method="_on_game_level_bad_memory"]
+[connection signal="good_memory" from="." to="ScreenBackground/MemoryTextSpawner" method="_on_game_level_good_memory"]
 [connection signal="timeout" from="FastTimer" to="." method="_on_fast_timer_timeout"]
 [connection signal="timeout" from="ShardSpawner/SpawnTimer" to="ShardSpawner" method="_on_spawn_timer_timeout"]

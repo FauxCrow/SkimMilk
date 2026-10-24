@@ -5,6 +5,8 @@ extends Node
 var good_memories : Array[String] = []
 var bad_memories : Array[String] = []
 
+@export var text_positions : Array[Vector2] = []
+
 func _ready() -> void:
 	setup_json()
 	
@@ -50,13 +52,16 @@ func spawn_good_memory() -> void:
 	
 	var new_memory = _memory.instantiate()
 	add_child(new_memory)
+	new_memory.global_position = text_positions.pick_random()
 	new_memory.text = text
+	new_memory.label_settings.font_color = Color.WHITE
 
 func spawn_bad_memory() -> void:
 	var text = bad_memories.pop_back()
 	
 	var new_memory = _memory.instantiate()
 	add_child(new_memory)
+	new_memory.global_position = text_positions.pick_random()
 	new_memory.text = text
 	new_memory.label_settings.font_color = Color.RED
 

@@ -45,7 +45,6 @@ func _physics_process(delta: float) -> void:
 		force_update_scroll()
 	scroll_speed = maxf((global_position.y - previous_y) / delta, 0.0)
 
-
 func stop_scrolling() -> void:
 	scrolling_stopped = true
 	scroll_speed = 0.0

@@ -2,7 +2,7 @@ extends Node
 
 func _ready() -> void:
 	# TODO: Set position of memory spawns
-	pass
+	tween_visibility()
 
 func tween_visibility() -> void:
 	var current_tween = create_tween()

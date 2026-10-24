@@ -4,19 +4,17 @@ var isGood : bool
 
 @onready var sprite_2d = $ShardSprite
 
+@export var speed: float = 100.0
+var direction: Vector2 = Vector2.UP
+
 # Used by shard spawner to set what kind of shard this is
-func setup_shard(type : bool, sprite : Sprite2D) -> void:
+func setup_shard(type : bool, sprite : Texture) -> void:
 	isGood = type
 	sprite_2d.texture = sprite
 
-func _ready() -> void:
-	var _position = Vector2(randf_range(420,880), 800)
-	set_position(_position)
-
 # Handles movement of shard across screen
-func _process(delta: float) -> void:
-	
-	# TODO: Shard upwards movement
+func _physics_process(delta: float) -> void:
+	#global_position += direction * speed * delta
 	pass
 
 # Used to detect if player has been hit
@@ -31,6 +29,5 @@ func _on_area_2d_body_entered(body: Node2D) -> void:
 		
 		queue_free()
 
-# Used to destroy shard after some time (left screen)
 func _on_expiry_timer_timeout() -> void:
 	queue_free()
