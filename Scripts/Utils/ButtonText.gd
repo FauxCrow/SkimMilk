@@ -1,5 +1,7 @@
 extends Node
 
+@export var scene_path : String
+
 func _on_mouse_entered() -> void:
 	var tween = create_tween()
 	
@@ -19,4 +21,4 @@ func _on_mouse_exited() -> void:
 func _on_input_event(viewport: Node, event: InputEvent, shape_idx: int) -> void:
 	if event is InputEventMouseButton and event.pressed:
 		if event.button_index == MOUSE_BUTTON_LEFT:
-			SceneManager.change_scene("res://Scenes/game_level.tscn")
+			SceneManager.change_scene(scene_path)

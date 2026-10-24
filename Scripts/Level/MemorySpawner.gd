@@ -1,7 +1,9 @@
 extends Node
 
-@export var good_memories : Array[String] = []
-@export var bad_memories : Array[String] = []
+@onready var _memory = preload("res://Assets/Prefabs/memory_text.tscn")
+
+var good_memories : Array[String] = []
+var bad_memories : Array[String] = []
 
 func _ready() -> void:
 	setup_json()
@@ -45,15 +47,18 @@ func setup_json() -> void:
 
 func spawn_good_memory() -> void:
 	var text = good_memories.pop_back()
-	print(text)
 	
-	# TODO: Spawn this text somewhere on the screen in the background
+	var new_memory = _memory.instantiate()
+	add_child(new_memory)
+	new_memory.text = text
 
 func spawn_bad_memory() -> void:
 	var text = bad_memories.pop_back()
-	print(text)
 	
-	# TODO: Spawn this text somewhere on the screen in the background
+	var new_memory = _memory.instantiate()
+	add_child(new_memory)
+	new_memory.text = text
+	new_memory.label_settings.font_color = Color.RED
 
 func _on_game_level_good_memory() -> void:
 	spawn_good_memory()

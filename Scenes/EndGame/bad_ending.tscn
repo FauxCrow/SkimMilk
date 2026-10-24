@@ -1,4 +1,4 @@
-[gd_scene load_steps=15 format=3 uid="uid://cpyst275q6qki"]
+[gd_scene load_steps=20 format=3 uid="uid://cpyst275q6qki"]
 
 [ext_resource type="Shader" uid="uid://wkohj584vpem" path="res://Assets/Shaders/retro_cam.gdshader" id="1_8cfoo"]
 [ext_resource type="Texture2D" uid="uid://d21yn0g304ea1" path="res://Assets/Images/bad_bg.jpg" id="2_gstm6"]
@@ -7,6 +7,8 @@
 [ext_resource type="Script" uid="uid://cwf84r4ud5c3p" path="res://Scripts/End/EasterEgg.gd" id="5_1wkt8"]
 [ext_resource type="Texture2D" uid="uid://ot818x218kdm" path="res://Assets/Images/Milks/photo_2026-10-24_18-21-51-removebg-preview.png" id="6_lwqdk"]
 [ext_resource type="Texture2D" uid="uid://cvykpxuwpof8r" path="res://Assets/Images/Milks/photo_2026-10-24_18-21-52-removebg-preview.png" id="7_icyoa"]
+[ext_resource type="Shader" uid="uid://ck4se8gfon8mn" path="res://Assets/Shaders/darkness.gdshader" id="8_icyoa"]
+[ext_resource type="Texture2D" uid="uid://c74gib5e3vt5j" path="res://Assets/Images/ShaderTexture/bad_mask.png" id="9_5eh25"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_c02ta"]
 shader = ExtResource("1_8cfoo")
@@ -34,9 +36,23 @@ size = Vector2(117, 70)
 line_spacing = -20.0
 font = ExtResource("3_4jy1h")
 font_size = 32
-font_color = Color(0, 0, 0, 1)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_icyoa"]
+size = Vector2(95, 44)
+
+[sub_resource type="LabelSettings" id="LabelSettings_5eh25"]
+line_spacing = -20.0
+font = ExtResource("3_4jy1h")
+font_size = 32
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_5eh25"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_4gopr"]
+shader = ExtResource("8_icyoa")
+shader_parameter/line_color = Color(0, 0, 0, 1)
+shader_parameter/line_density = 100.0
+shader_parameter/line_thickness = 0.4
+shader_parameter/animation_speed = 10.0
 
 [node name="BadEnding" type="Node2D"]
 
@@ -72,6 +88,7 @@ vertical_alignment = 1
 position = Vector2(407, 569)
 rotation = -0.0349066
 script = ExtResource("4_gstm6")
+scene_path = "res://Scenes/game_level.tscn"
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="TryAgain"]
 position = Vector2(11.5, 4)
@@ -90,6 +107,30 @@ grow_vertical = 2
 text = "try
 again?"
 label_settings = SubResource("LabelSettings_c02ta")
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Leave" type="Area2D" parent="."]
+position = Vector2(745, 410)
+script = ExtResource("4_gstm6")
+scene_path = "res://Scenes/main_menu.tscn"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Leave"]
+position = Vector2(8, 4)
+shape = SubResource("RectangleShape2D_icyoa")
+
+[node name="LeaveBtn" type="Label" parent="Leave"]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -103.0
+offset_top = -27.0
+offset_right = 123.0
+offset_bottom = 26.0
+grow_horizontal = 2
+grow_vertical = 2
+text = "leave."
+label_settings = SubResource("LabelSettings_5eh25")
 horizontal_alignment = 1
 vertical_alignment = 1
 
@@ -120,8 +161,17 @@ modulate = Color(1, 1, 1, 0.196078)
 scale = Vector2(0.25, 0.25)
 texture = ExtResource("7_icyoa")
 
+[node name="DarknessShader" type="Sprite2D" parent="."]
+z_index = -3
+material = SubResource("ShaderMaterial_4gopr")
+position = Vector2(641, 453)
+texture = ExtResource("9_5eh25")
+
 [connection signal="input_event" from="TryAgain" to="TryAgain" method="_on_input_event"]
 [connection signal="mouse_entered" from="TryAgain" to="TryAgain" method="_on_mouse_entered"]
 [connection signal="mouse_exited" from="TryAgain" to="TryAgain" method="_on_mouse_exited"]
+[connection signal="input_event" from="Leave" to="Leave" method="_on_input_event"]
+[connection signal="mouse_entered" from="Leave" to="Leave" method="_on_mouse_entered"]
+[connection signal="mouse_exited" from="Leave" to="Leave" method="_on_mouse_exited"]
 [connection signal="input_event" from="MilkEgg" to="MilkEgg" method="_on_input_event"]
 [connection signal="input_event" from="MilkEgg2" to="MilkEgg2" method="_on_input_event"]
