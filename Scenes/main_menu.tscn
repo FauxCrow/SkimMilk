@@ -1,6 +1,12 @@
-[gd_scene load_steps=5 format=3 uid="uid://bkhkls1mrjc5w"]
+[gd_scene load_steps=15 format=3 uid="uid://bkhkls1mrjc5w"]
 
 [ext_resource type="Shader" uid="uid://wkohj584vpem" path="res://Assets/Shaders/retro_cam.gdshader" id="1_28flt"]
+[ext_resource type="Shader" uid="uid://ck4se8gfon8mn" path="res://Assets/Shaders/darkness.gdshader" id="2_1ehe0"]
+[ext_resource type="Texture2D" uid="uid://ciw3j3ufjgbdk" path="res://Assets/Images/Placeholders/temp_topSlide.jpeg" id="2_48xlc"]
+[ext_resource type="Texture2D" uid="uid://crgp5ph3m0rt" path="res://Assets/Sprites/BlackCircle.png" id="2_ce3w2"]
+[ext_resource type="Script" uid="uid://0fota7vpopv5" path="res://Scripts/Menu/ShowQuote.gd" id="3_cp0ys"]
+[ext_resource type="Script" uid="uid://cw351oi2pk32g" path="res://Scripts/Menu/HoverSelect.gd" id="3_n45e2"]
+[ext_resource type="FontFile" uid="uid://bko22g7t631eo" path="res://Assets/Fonts/Andika-Italic.ttf" id="3_opfnp"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_48xlc"]
 shader = ExtResource("1_28flt")
@@ -17,9 +23,92 @@ gradient = SubResource("Gradient_1ehe0")
 width = 1280
 height = 720
 
+[sub_resource type="LabelSettings" id="LabelSettings_opfnp"]
+font = ExtResource("3_opfnp")
+font_size = 32
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_n45e2"]
+
+[sub_resource type="LabelSettings" id="LabelSettings_cp0ys"]
+font = ExtResource("3_opfnp")
+font_size = 24
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_ce3w2"]
+shader = ExtResource("2_1ehe0")
+shader_parameter/line_color = Color(0, 0, 0, 1)
+shader_parameter/line_density = 50.0
+shader_parameter/line_thickness = 0.2
+shader_parameter/animation_speed = 10.0
+
 [node name="Node2D" type="Node2D"]
 
 [node name="RetroShader" type="Sprite2D" parent="."]
+z_index = 5
 material = SubResource("ShaderMaterial_48xlc")
 texture = SubResource("GradientTexture2D_ce3w2")
 centered = false
+
+[node name="QuoteText" type="Label" parent="."]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 527.0
+offset_top = 348.5
+offset_right = 753.0
+offset_bottom = 371.5
+grow_horizontal = 2
+grow_vertical = 2
+text = "Don't cry over skimmed milk!"
+label_settings = SubResource("LabelSettings_opfnp")
+horizontal_alignment = 1
+vertical_alignment = 1
+visible_characters = 0
+visible_ratio = 0.0
+script = ExtResource("3_cp0ys")
+
+[node name="AppearTimer" type="Timer" parent="QuoteText"]
+wait_time = 0.1
+
+[node name="DisappearTimer" type="Timer" parent="QuoteText"]
+wait_time = 3.0
+
+[node name="StartGameArea" type="Area2D" parent="."]
+position = Vector2(640, 360)
+script = ExtResource("3_n45e2")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="StartGameArea"]
+scale = Vector2(13, 13)
+shape = SubResource("CircleShape2D_n45e2")
+
+[node name="StartText" type="Label" parent="StartGameArea"]
+visible = false
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+text = "enter?"
+label_settings = SubResource("LabelSettings_cp0ys")
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="SlideEntranceSprite" type="Sprite2D" parent="StartGameArea"]
+z_index = -1
+texture = ExtResource("2_ce3w2")
+
+[node name="DarknessShader" type="Sprite2D" parent="StartGameArea/SlideEntranceSprite"]
+material = SubResource("ShaderMaterial_ce3w2")
+texture = ExtResource("2_ce3w2")
+
+[node name="SlidePhoto" type="Sprite2D" parent="."]
+z_index = -5
+scale = Vector2(1.89614, 1.58022)
+texture = ExtResource("2_48xlc")
+centered = false
+
+[connection signal="timeout" from="QuoteText/AppearTimer" to="QuoteText" method="_on_appear_timer_timeout"]
+[connection signal="timeout" from="QuoteText/DisappearTimer" to="QuoteText" method="_on_disappear_timer_timeout"]
+[connection signal="enter_slide" from="StartGameArea" to="QuoteText" method="_on_start_game_area_enter_slide"]
+[connection signal="input_event" from="StartGameArea" to="StartGameArea" method="_on_input_event"]
+[connection signal="mouse_entered" from="StartGameArea" to="StartGameArea" method="_on_mouse_entered"]
+[connection signal="mouse_exited" from="StartGameArea" to="StartGameArea" method="_on_mouse_exited"]
