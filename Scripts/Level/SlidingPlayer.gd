@@ -33,13 +33,19 @@ func _physics_process(delta: float) -> void:
 	if movement_stopped:
 		return
 
+	# Left and right steering + friction
+	var steer := Input.get_axis("slide_left", "slide_right")
+	var new_x_speed := (velocity.x + steer * steer_acceleration * delta)
+	new_x_speed /= 1.0 + sideways_drag * delta
+	new_x_speed = clampf(new_x_speed, -maximum_steer_speed, maximum_steer_speed)
+	
 	# Downhill movement
 	var acceleartion := downhill_acceleration
 
 	if Input.is_action_pressed("slide_brake"):
 		acceleartion -= brake_strength
 		sprite.texture = sprites[2]
-	elif Input.is_action_pressed("slide_speed_up"):
+	elif Input.is_action_pressed("slide_speed_up") or steer != 0.0:
 		acceleartion += speed_up_acceleration
 		sprite.texture = sprites[1]
 	else:
@@ -49,11 +55,7 @@ func _physics_process(delta: float) -> void:
 	new_y_speed /= 1.0 + downhill_drag * delta
 	new_y_speed = clampf(new_y_speed, minimum_slide_speed, maximum_slide_speed)
 
-	# Left and right steering + friction
-	var steer := Input.get_axis("slide_left", "slide_right")
-	var new_x_speed := (velocity.x + steer * steer_acceleration * delta)
-	new_x_speed /= 1.0 + sideways_drag * delta
-	new_x_speed = clampf(new_x_speed, -maximum_steer_speed, maximum_steer_speed)
+	
 
 	_move_along_slide(new_x_speed, new_y_speed)
 

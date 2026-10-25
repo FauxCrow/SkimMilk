@@ -16,6 +16,9 @@ var estimate_time_per_shard: float = 3.0
 @onready var fastTimer = $FastTimer
 var isLong: bool = false
 
+@export var dark_shader : ColorRect
+@export var shake_shader : ColorRect
+
 signal good_memory
 signal bad_memory
 
@@ -46,7 +49,7 @@ func game_setup() -> void:
 	var limits = GameVariables.win_requirements()
 	limit_good_shards = floorf(limits[0])
 	limit_bad_shards = floorf(limits[1])
-	fastTimer.wait_time = estimate_time_per_shard * limit_good_shards * 2 # account for 50/50 chance
+	fastTimer.wait_time = estimate_time_per_shard * limit_good_shards * 1.5 # account for 50/50 chance
 
 func add_good_shard() -> void:
 	current_good_shards += 1
@@ -55,7 +58,8 @@ func add_good_shard() -> void:
 	sfx_player.stream = good_sfx
 	sfx_player.play()
 	
-	# TODO: Affect player's brightness shader
+	temp_shake()
+	add_brightness(0.5 * (current_good_shards / limit_good_shards))
 	
 	check_game_end()
 
@@ -66,7 +70,8 @@ func add_bad_shard() -> void:
 	sfx_player.stream = bad_sfx
 	sfx_player.play()
 	
-	# TODO: Affect screen darkness shader
+	temp_shake()
+	add_darkness(current_bad_shards / limit_bad_shards)
 	
 	check_game_end()
 
@@ -91,3 +96,14 @@ func game_lose() -> void:
 
 func _on_fast_timer_timeout() -> void:
 	isLong = true
+
+func add_darkness(value : float):
+	dark_shader.material.set_shader_parameter("alpha", value)
+
+func add_brightness(value : float):
+	player.get_child(0).material.set_shader_parameter("white_progress", value)
+
+func temp_shake():
+	shake_shader.visible = true
+	await get_tree().create_timer(0.5).timeout
+	shake_shader.visible = false

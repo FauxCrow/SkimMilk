@@ -1,6 +1,5 @@
-[gd_scene load_steps=18 format=3 uid="uid://bgmut7a0k248x"]
+[gd_scene load_steps=20 format=3 uid="uid://bgmut7a0k248x"]
 
-[ext_resource type="Shader" uid="uid://wkohj584vpem" path="res://Assets/Shaders/retro_cam.gdshader" id="1_ht4rx"]
 [ext_resource type="Script" uid="uid://d2j783ui8q6bi" path="res://Scripts/Level/GameManager.gd" id="1_u7uub"]
 [ext_resource type="Texture2D" uid="uid://mip2ygia1pjv" path="res://Assets/Sprites/slide_bg.png" id="2_g3g87"]
 [ext_resource type="Texture2D" uid="uid://b304txbciw7pu" path="res://Assets/Sprites/bad_spritesheet.png" id="5_g3g87"]
@@ -14,6 +13,8 @@
 [ext_resource type="Script" uid="uid://gqxdtm7sa2p6" path="res://Scripts/Level/VerticalFollowCamera.gd" id="9_camera"]
 [ext_resource type="AudioStream" uid="uid://nubors40p2vb" path="res://Assets/Audio/BGM/new_song.wav" id="10_e38tf"]
 [ext_resource type="SpriteFrames" uid="uid://b15dig7g18one" path="res://Assets/Sprites/Enemies/seal_frames.tres" id="10_oq34n"]
+[ext_resource type="Shader" uid="uid://cefrvxfyk0r2l" path="res://Assets/Shaders/vignette.gdshader" id="13_rn1up"]
+[ext_resource type="Shader" uid="uid://8cbgfpqd6cnp" path="res://Assets/Shaders/shake.gdshader" id="14_1m3u1"]
 
 [sub_resource type="WorldBoundaryShape2D" id="LeftWallShape"]
 normal = Vector2(1, 0)
@@ -22,14 +23,22 @@ normal = Vector2(1, 0)
 normal = Vector2(-1, 0)
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_u7uub"]
-shader = ExtResource("1_ht4rx")
-shader_parameter/pixel_size = 3.0
-shader_parameter/vhs_intensity = 3.0
-shader_parameter/noise_intensity = 0.15
-shader_parameter/opacity = 0.5
+shader = ExtResource("13_rn1up")
+shader_parameter/alpha = 0.0
+shader_parameter/inner_radius = 0.0
+shader_parameter/outer_radius = 1.0
 
-[node name="GameLevel" type="Node2D" groups=["GameManager"]]
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_oq34n"]
+shader = ExtResource("14_1m3u1")
+shader_parameter/ShakeStrength = 0.1
+shader_parameter/FactorA = Vector2(100, 100)
+shader_parameter/FactorB = Vector2(1, 1)
+shader_parameter/magnitude = Vector2(0.01, 0.01)
+
+[node name="GameLevel" type="Node2D" node_paths=PackedStringArray("dark_shader", "shake_shader") groups=["GameManager"]]
 script = ExtResource("1_u7uub")
+dark_shader = NodePath("ScreenEffects/VignetteEffect")
+shake_shader = NodePath("ScreenEffects/CamShake")
 
 [node name="Background" type="Node" parent="."]
 
@@ -106,9 +115,8 @@ target = NodePath("../Player")
 
 [node name="ScreenEffects" type="CanvasLayer" parent="."]
 layer = 5
-visible = false
 
-[node name="RetroEffect" type="ColorRect" parent="ScreenEffects"]
+[node name="VignetteEffect" type="ColorRect" parent="ScreenEffects"]
 material = SubResource("ShaderMaterial_u7uub")
 anchors_preset = 15
 anchor_right = 1.0
@@ -116,6 +124,15 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 mouse_filter = 2
+
+[node name="CamShake" type="ColorRect" parent="ScreenEffects"]
+visible = false
+material = SubResource("ShaderMaterial_oq34n")
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
 
 [node name="BGM" type="AudioStreamPlayer" parent="."]
 stream = ExtResource("10_e38tf")
