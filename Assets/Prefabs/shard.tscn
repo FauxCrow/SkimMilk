@@ -1,7 +1,7 @@
 [gd_scene load_steps=4 format=3 uid="uid://c4qf8o21f2tlu"]
 
 [ext_resource type="Script" uid="uid://dv7h88avihfx8" path="res://Scripts/Level/Shard.gd" id="1_s8qgn"]
-[ext_resource type="Texture2D" uid="uid://crgp5ph3m0rt" path="res://Assets/Sprites/BlackCircle.png" id="2_s8qgn"]
+[ext_resource type="Texture2D" uid="uid://bki4ec2btjxhl" path="res://Assets/Sprites/32x32Placeholder.png" id="2_s8qgn"]
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_s8qgn"]
 
@@ -14,7 +14,7 @@ scale = Vector2(0.5, 0.5)
 texture = ExtResource("2_s8qgn")
 
 [node name="Area2D" type="Area2D" parent="."]
-scale = Vector2(4, 4)
+scale = Vector2(1.5, 1.5)
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D"]
 shape = SubResource("CapsuleShape2D_s8qgn")

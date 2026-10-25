@@ -1,11 +1,12 @@
-[gd_scene load_steps=12 format=3 uid="uid://bgmut7a0k248x"]
+[gd_scene load_steps=13 format=3 uid="uid://bgmut7a0k248x"]
 
 [ext_resource type="Shader" uid="uid://wkohj584vpem" path="res://Assets/Shaders/retro_cam.gdshader" id="1_ht4rx"]
 [ext_resource type="Script" uid="uid://d2j783ui8q6bi" path="res://Scripts/Level/GameManager.gd" id="1_u7uub"]
-[ext_resource type="Texture2D" uid="uid://dd006khsgcnfb" path="res://icon.svg" id="2_ht4rx"]
+[ext_resource type="Texture2D" uid="uid://mip2ygia1pjv" path="res://Assets/Sprites/slide_bg.png" id="2_g3g87"]
+[ext_resource type="Texture2D" uid="uid://b304txbciw7pu" path="res://Assets/Sprites/bad_spritesheet.png" id="5_g3g87"]
 [ext_resource type="Script" uid="uid://ck2o7ugjkvq54" path="res://Scripts/Level/MemorySpawner.gd" id="5_mql7d"]
 [ext_resource type="Script" uid="uid://coio5ep7267ng" path="res://Scripts/Level/ShardSpawner.gd" id="6_5x8s8"]
-[ext_resource type="Texture2D" uid="uid://crgp5ph3m0rt" path="res://Assets/Sprites/BlackCircle.png" id="7_5x8s8"]
+[ext_resource type="Texture2D" uid="uid://cuugsh21742vw" path="res://Assets/Sprites/good_spritesheet.png" id="6_w0fld"]
 [ext_resource type="PackedScene" uid="uid://cfii23lafgj6m" path="res://Assets/Prefabs/Player.tscn" id="8_player"]
 [ext_resource type="Script" uid="uid://gqxdtm7sa2p6" path="res://Scripts/Level/VerticalFollowCamera.gd" id="9_camera"]
 
@@ -34,8 +35,8 @@ repeat_size = Vector2(0, 716.8)
 repeat_times = 2
 
 [node name="Sprite2D" type="Sprite2D" parent="Background/ParallaxSlide"]
-scale = Vector2(4, 5.6)
-texture = ExtResource("2_ht4rx")
+position = Vector2(-3, 2)
+texture = ExtResource("2_g3g87")
 centered = false
 
 [node name="ScreenBackground" type="CanvasLayer" parent="."]
@@ -57,14 +58,14 @@ text_positions = Array[Vector2]([Vector2(50, 50), Vector2(100, 400), Vector2(200
 [node name="Collisions" type="Node" parent="."]
 
 [node name="LeftWall" type="StaticBody2D" parent="Collisions"]
-position = Vector2(377, 0)
+position = Vector2(401, 0)
 collision_layer = 2
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Collisions/LeftWall"]
 shape = SubResource("LeftWallShape")
 
 [node name="RightWall" type="StaticBody2D" parent="Collisions"]
-position = Vector2(919, 0)
+position = Vector2(895, 0)
 collision_layer = 2
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Collisions/RightWall"]
@@ -75,8 +76,8 @@ shape = SubResource("RightWallShape")
 [node name="ShardSpawner" type="Node" parent="." node_paths=PackedStringArray("camera")]
 script = ExtResource("6_5x8s8")
 camera = NodePath("../VerticalCamera")
-good_shard_sprite = Array[Texture]([ExtResource("7_5x8s8")])
-bad_shard_sprite = Array[Texture]([ExtResource("7_5x8s8")])
+bad_sprite_sheet = ExtResource("5_g3g87")
+good_sprite_sheet = ExtResource("6_w0fld")
 
 [node name="SpawnTimer" type="Timer" parent="ShardSpawner"]
 wait_time = 2.0

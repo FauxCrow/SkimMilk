@@ -20,8 +20,6 @@ func _physics_process(delta: float) -> void:
 # Used to detect if player has been hit
 func _on_area_2d_body_entered(body: Node2D) -> void:
 	if body.name == "Player":
-		print("DEBUG: Hit player!!")
-		
 		if isGood:
 			get_tree().call_group("GameManager", "add_good_shard")
 		else:

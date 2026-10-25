@@ -36,7 +36,7 @@ func game_setup() -> void:
 	var limits = GameVariables.win_requirements()
 	limit_good_shards = floorf(limits[0])
 	limit_bad_shards = floorf(limits[1])
-	fastTimer.wait_time = estimate_time_per_shard * limit_good_shards
+	fastTimer.wait_time = estimate_time_per_shard * limit_good_shards * 2 # account for 50/50 chance
 
 func add_good_shard() -> void:
 	current_good_shards += 1
@@ -55,6 +55,9 @@ func add_bad_shard() -> void:
 	check_game_end()
 
 func check_game_end() -> void:
+	print("Bad shard: ", current_bad_shards, " / ", limit_bad_shards)
+	print("Good shard: ", current_good_shards, " / ", limit_good_shards)
+	
 	if current_bad_shards >= limit_bad_shards:
 		game_lose()
 	

@@ -1,6 +1,6 @@
 extends Node
 
-var completed_runs : float = 5 # tracks how many times you have won
+var completed_runs : float = 0 # tracks how many times you have won
 var milk_track : Array = [0,0,0,0,0,0]
 
 func check_milk(index : int) -> int:

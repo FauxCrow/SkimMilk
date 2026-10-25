@@ -4,8 +4,12 @@ extends Node
 @onready var spawn_timer = $SpawnTimer
 
 @export var camera: Camera2D
-@export var good_shard_sprite : Array[Texture] = []
-@export var bad_shard_sprite : Array[Texture] = []
+
+@export var bad_sprite_sheet : Texture2D
+@export var good_sprite_sheet : Texture2D
+var h_frames : int = 4
+var v_frames : int = 1
+var sprite_size : Vector2 = Vector2(128, 128)
 
 var spawn_offset_y: float = 100.0
 
@@ -31,13 +35,34 @@ func spawn_shard() -> void:
 	get_tree().current_scene.add_child(new_shard)
 	
 	if (randi() % 2 == 1):
-		new_shard.setup_shard(true, good_shard_sprite.pick_random())
+		var random_atlas = get_random_atlas_texture(good_sprite_sheet)
+		new_shard.setup_shard(true, random_atlas)
 	else:
-		new_shard.setup_shard(false, bad_shard_sprite.pick_random())
+		var random_atlas = get_random_atlas_texture(bad_sprite_sheet)
+		new_shard.setup_shard(false, random_atlas)
 	
 	spawn_timer.start()
 
+func get_random_atlas_texture(sprite_sheet : Texture2D) -> AtlasTexture:
+	if not sprite_sheet:
+		return null
+	
+	var total_sprites = h_frames * v_frames
+	var random_index = randi() % total_sprites
+	
+	var col = random_index % h_frames
+	var row = random_index / h_frames
+	
+	var atlas = AtlasTexture.new()
+	atlas.atlas = sprite_sheet
+	
+	atlas.region = Rect2(
+		Vector2(col * sprite_size.x, row * sprite_size.y),
+		sprite_size
+	)
+	
+	return atlas
+
 func _on_spawn_timer_timeout() -> void:
 	spawn_shard()
-	
 	spawn_timer.start()
