@@ -10,6 +10,8 @@ var current_tween : Tween = null
 @onready var milkPlush = $PlushReward
 @onready var childHead = $ChildHead
 
+@export var BGMPlayer : AudioStreamPlayer
+
 signal enter_slide
 
 func _ready() -> void:
@@ -68,8 +70,13 @@ func tween_movement(time : float, value : float, sprite : Sprite2D, callback: Ca
 		callback.call()
 
 func darken_anim():
+	fade_out_audio(3.0)
 	hide_text()
 	tween_movement(0.5, 6, darknessShape, signal_complete)
+
+func fade_out_audio(duration: float = 1.0) -> void:
+	var tween := create_tween()
+	tween.tween_property(BGMPlayer, "volume_db", -80.0, duration)
 
 func signal_complete():
 	enter_slide.emit()

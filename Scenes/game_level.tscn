@@ -1,4 +1,4 @@
-[gd_scene load_steps=13 format=3 uid="uid://bgmut7a0k248x"]
+[gd_scene load_steps=14 format=3 uid="uid://bgmut7a0k248x"]
 
 [ext_resource type="Shader" uid="uid://wkohj584vpem" path="res://Assets/Shaders/retro_cam.gdshader" id="1_ht4rx"]
 [ext_resource type="Script" uid="uid://d2j783ui8q6bi" path="res://Scripts/Level/GameManager.gd" id="1_u7uub"]
@@ -9,6 +9,7 @@
 [ext_resource type="Texture2D" uid="uid://cuugsh21742vw" path="res://Assets/Sprites/good_spritesheet.png" id="6_w0fld"]
 [ext_resource type="PackedScene" uid="uid://cfii23lafgj6m" path="res://Assets/Prefabs/Player.tscn" id="8_player"]
 [ext_resource type="Script" uid="uid://gqxdtm7sa2p6" path="res://Scripts/Level/VerticalFollowCamera.gd" id="9_camera"]
+[ext_resource type="AudioStream" uid="uid://nubors40p2vb" path="res://Assets/Audio/BGM/new_song.wav" id="10_e38tf"]
 
 [sub_resource type="WorldBoundaryShape2D" id="LeftWallShape"]
 normal = Vector2(1, 0)
@@ -103,6 +104,10 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 mouse_filter = 2
+
+[node name="BGM" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("10_e38tf")
+autoplay = true
 
 [connection signal="bad_memory" from="." to="ScreenBackground/MemoryTextSpawner" method="_on_game_level_bad_memory"]
 [connection signal="good_memory" from="." to="ScreenBackground/MemoryTextSpawner" method="_on_game_level_good_memory"]

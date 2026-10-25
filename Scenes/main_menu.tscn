@@ -1,4 +1,4 @@
-[gd_scene load_steps=19 format=3 uid="uid://bkhkls1mrjc5w"]
+[gd_scene load_steps=20 format=3 uid="uid://bkhkls1mrjc5w"]
 
 [ext_resource type="Shader" uid="uid://wkohj584vpem" path="res://Assets/Shaders/retro_cam.gdshader" id="1_28flt"]
 [ext_resource type="Shader" uid="uid://ck4se8gfon8mn" path="res://Assets/Shaders/darkness.gdshader" id="2_1ehe0"]
@@ -10,6 +10,7 @@
 [ext_resource type="Texture2D" uid="uid://bgsb0n477a45r" path="res://Assets/Images/child_head.png" id="7_yhxw7"]
 [ext_resource type="Texture2D" uid="uid://dja0vxgayt0o1" path="res://Assets/Images/Milks/milk_plush.png" id="8_yhxw7"]
 [ext_resource type="Script" uid="uid://c4wfrpqau04cc" path="res://Scripts/Menu/HeadAnim.gd" id="9_16hvj"]
+[ext_resource type="AudioStream" uid="uid://cum20lyu18lda" path="res://Assets/Audio/BGM/menu_bgm.wav" id="11_vr1f0"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_48xlc"]
 shader = ExtResource("1_28flt")
@@ -88,9 +89,10 @@ wait_time = 0.1
 [node name="DisappearTimer" type="Timer" parent="QuoteText"]
 wait_time = 3.0
 
-[node name="StartGameArea" type="Area2D" parent="."]
+[node name="StartGameArea" type="Area2D" parent="." node_paths=PackedStringArray("BGMPlayer")]
 position = Vector2(640, 360)
 script = ExtResource("3_n45e2")
+BGMPlayer = NodePath("../BGM")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="StartGameArea"]
 scale = Vector2(25, 25)
@@ -139,6 +141,10 @@ position = Vector2(0, -119)
 scale = Vector2(0.5, 0.5)
 texture = ExtResource("7_cp0ys")
 centered = false
+
+[node name="BGM" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("11_vr1f0")
+autoplay = true
 
 [connection signal="timeout" from="QuoteText/AppearTimer" to="QuoteText" method="_on_appear_timer_timeout"]
 [connection signal="timeout" from="QuoteText/DisappearTimer" to="QuoteText" method="_on_disappear_timer_timeout"]

@@ -1,4 +1,4 @@
-[gd_scene load_steps=19 format=3 uid="uid://beoquv6oxaso2"]
+[gd_scene load_steps=20 format=3 uid="uid://beoquv6oxaso2"]
 
 [ext_resource type="Shader" uid="uid://wkohj584vpem" path="res://Assets/Shaders/retro_cam.gdshader" id="1_k5dhg"]
 [ext_resource type="Texture2D" uid="uid://cq4ftbvkq28bo" path="res://Assets/Images/neutral_bg.jpg" id="2_08284"]
@@ -9,6 +9,7 @@
 [ext_resource type="Texture2D" uid="uid://ds0tduvjjajvf" path="res://Assets/Images/Milks/photo_2026-10-24_18-21-50-removebg-preview.png" id="7_4vjc2"]
 [ext_resource type="Shader" uid="uid://ck4se8gfon8mn" path="res://Assets/Shaders/darkness.gdshader" id="8_svlr2"]
 [ext_resource type="Texture2D" uid="uid://dem1kickdkew5" path="res://Assets/Images/ShaderTexture/neutral_mask.png" id="9_qv7r1"]
+[ext_resource type="AudioStream" uid="uid://bs1toqll3y815" path="res://Assets/Audio/BGM/neutral_bgm.wav" id="10_qv7r1"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_beiv0"]
 shader = ExtResource("1_k5dhg")
@@ -162,6 +163,11 @@ material = SubResource("ShaderMaterial_pkvow")
 position = Vector2(641, 475)
 scale = Vector2(0.5, 0.5)
 texture = ExtResource("9_qv7r1")
+
+[node name="BGM" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("10_qv7r1")
+volume_db = -10.0
+autoplay = true
 
 [connection signal="input_event" from="TryAgain" to="TryAgain" method="_on_input_event"]
 [connection signal="mouse_entered" from="TryAgain" to="TryAgain" method="_on_mouse_entered"]
