@@ -5,14 +5,14 @@ extends CharacterBody2D
 @onready var sprite = $Sprite
 
 @export_group("Downhill")
-@export_range(1.0, 2000.0, 1.0) var minimum_slide_speed: float = 120.0
+@export_range(-2000.0, 2000.0, 1.0) var minimum_slide_speed: float = -200.0
 @export_range(1.0, 2000.0, 1.0) var maximum_slide_speed: float = 650.0
 @export_range(1.0, 2000.0, 1.0) var starting_slide_speed: float = 400.0
 
 func _ready() -> void:
 	motion_mode = CharacterBody2D.MOTION_MODE_FLOATING
 	wall_min_slide_angle = 0.0
-	minimum_slide_speed = maxf(minimum_slide_speed, 1.0)
+	minimum_slide_speed = minf(minimum_slide_speed, maximum_slide_speed)
 	maximum_slide_speed = maxf(maximum_slide_speed, minimum_slide_speed)
 	velocity.y = clampf(starting_slide_speed, minimum_slide_speed, maximum_slide_speed)
 

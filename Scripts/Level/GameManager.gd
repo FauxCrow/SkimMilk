@@ -31,7 +31,12 @@ var game_ended: bool = false
 func _physics_process(_delta: float) -> void:
 	if game_ended:
 		return
-	if player.get_collision_viewport_rect().end.y >= get_viewport().get_visible_rect().end.y:
+	
+	var viewport_rect := get_viewport().get_visible_rect()
+	var player_rect := player.get_collision_viewport_rect()
+	var offset = 20.0
+	
+	if player_rect.end.y >= viewport_rect.end.y + offset or player_rect.position.y <= viewport_rect.position.y - offset:
 		game_ended = true
 		player.stop_movement()
 		$VerticalCamera.stop_scrolling()
