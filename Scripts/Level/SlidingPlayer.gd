@@ -1,6 +1,9 @@
 class_name SlidingPlayer
 extends CharacterBody2D
 
+@export var sprites : Array[Texture] = []
+@onready var sprite = $Sprite
+
 @export_group("Downhill")
 @export_range(1.0, 2000.0, 1.0) var minimum_slide_speed: float = 120.0
 @export_range(1.0, 2000.0, 1.0) var maximum_slide_speed: float = 650.0
@@ -35,8 +38,12 @@ func _physics_process(delta: float) -> void:
 
 	if Input.is_action_pressed("slide_brake"):
 		acceleartion -= brake_strength
+		sprite.texture = sprites[2]
 	elif Input.is_action_pressed("slide_speed_up"):
 		acceleartion += speed_up_acceleration
+		sprite.texture = sprites[1]
+	else:
+		sprite.texture = sprites[0]
 
 	var new_y_speed := velocity.y + acceleartion * delta
 	new_y_speed /= 1.0 + downhill_drag * delta

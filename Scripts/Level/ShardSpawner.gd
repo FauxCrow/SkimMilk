@@ -1,6 +1,7 @@
 extends Node
 
 @onready var _shard = preload("res://Assets/Prefabs/shard.tscn")
+
 @onready var spawn_timer = $SpawnTimer
 
 @export var camera: Camera2D

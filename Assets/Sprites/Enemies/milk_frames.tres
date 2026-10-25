@@ -1,0 +1,39 @@
+[gd_resource type="SpriteFrames" load_steps=6 format=3 uid="uid://bo5mpdg6dphsj"]
+
+[ext_resource type="Texture2D" uid="uid://bydlen5jct6kw" path="res://Assets/Sprites/Enemies/milk_enemy.png" id="1_qp81c"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_n8tgc"]
+atlas = ExtResource("1_qp81c")
+region = Rect2(0, 0, 128, 128)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_8f2q7"]
+atlas = ExtResource("1_qp81c")
+region = Rect2(128, 0, 128, 128)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_qwbff"]
+atlas = ExtResource("1_qp81c")
+region = Rect2(256, 0, 128, 128)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_lllsl"]
+atlas = ExtResource("1_qp81c")
+region = Rect2(384, 0, 128, 128)
+
+[resource]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_n8tgc")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_8f2q7")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_qwbff")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_lllsl")
+}],
+"loop": true,
+"name": &"default",
+"speed": 5.0
+}]

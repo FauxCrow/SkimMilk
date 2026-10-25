@@ -6,6 +6,11 @@ var current_bad_shards: float = 0
 var limit_good_shards: float = 0 # will be changed on setup
 var limit_bad_shards: float = 0 # will be changed on setup
 
+@onready var sfx_player = $SFX
+
+@onready var bad_sfx = preload("res://Assets/Audio/SFX/bad_mem.wav")
+@onready var good_sfx = preload("res://Assets/Audio/SFX/good_mem.wav")
+
 var estimate_time_per_shard: float = 3.0
 
 @onready var fastTimer = $FastTimer
@@ -42,6 +47,9 @@ func add_good_shard() -> void:
 	current_good_shards += 1
 	good_memory.emit()
 	
+	sfx_player.stream = good_sfx
+	sfx_player.play()
+	
 	# TODO: Affect player's brightness shader
 	
 	check_game_end()
@@ -49,6 +57,9 @@ func add_good_shard() -> void:
 func add_bad_shard() -> void:
 	current_bad_shards += 1
 	bad_memory.emit()
+	
+	sfx_player.stream = bad_sfx
+	sfx_player.play()
 	
 	# TODO: Affect screen darkness shader
 	

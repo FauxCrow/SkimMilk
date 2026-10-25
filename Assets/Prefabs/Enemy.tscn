@@ -1,0 +1,64 @@
+[gd_scene load_steps=9 format=3 uid="uid://oeytu5u3y55n"]
+
+[ext_resource type="Texture2D" uid="uid://cx6ec4eivh11b" path="res://Assets/Sprites/Enemies/leapord_enemy.png" id="1_1miqi"]
+[ext_resource type="Script" uid="uid://d1m21pe514n3t" path="res://Scripts/Level/Enemy.gd" id="1_7ajng"]
+
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_20rs7"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_7ajng"]
+atlas = ExtResource("1_1miqi")
+region = Rect2(0, 0, 128, 128)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_20rs7"]
+atlas = ExtResource("1_1miqi")
+region = Rect2(128, 0, 128, 128)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_d3bm4"]
+atlas = ExtResource("1_1miqi")
+region = Rect2(256, 0, 128, 128)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_n53w0"]
+atlas = ExtResource("1_1miqi")
+region = Rect2(384, 0, 128, 128)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_suqcm"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_7ajng")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_20rs7")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_d3bm4")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_n53w0")
+}],
+"loop": true,
+"name": &"default",
+"speed": 5.0
+}]
+
+[node name="Enemy" type="Node2D"]
+scale = Vector2(2, 2)
+script = ExtResource("1_7ajng")
+
+[node name="StaticBody2D" type="StaticBody2D" parent="."]
+collision_layer = 2
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="StaticBody2D"]
+scale = Vector2(3, 3)
+shape = SubResource("CapsuleShape2D_20rs7")
+
+[node name="EnemySprite" type="AnimatedSprite2D" parent="."]
+z_index = 1
+sprite_frames = SubResource("SpriteFrames_suqcm")
+autoplay = "default"
+
+[node name="ExpiryTimer" type="Timer" parent="."]
+wait_time = 10.0
+autostart = true
+
+[connection signal="timeout" from="ExpiryTimer" to="." method="_on_expiry_timer_timeout"]

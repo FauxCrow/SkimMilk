@@ -1,4 +1,4 @@
-[gd_scene load_steps=14 format=3 uid="uid://bgmut7a0k248x"]
+[gd_scene load_steps=18 format=3 uid="uid://bgmut7a0k248x"]
 
 [ext_resource type="Shader" uid="uid://wkohj584vpem" path="res://Assets/Shaders/retro_cam.gdshader" id="1_ht4rx"]
 [ext_resource type="Script" uid="uid://d2j783ui8q6bi" path="res://Scripts/Level/GameManager.gd" id="1_u7uub"]
@@ -7,9 +7,13 @@
 [ext_resource type="Script" uid="uid://ck2o7ugjkvq54" path="res://Scripts/Level/MemorySpawner.gd" id="5_mql7d"]
 [ext_resource type="Script" uid="uid://coio5ep7267ng" path="res://Scripts/Level/ShardSpawner.gd" id="6_5x8s8"]
 [ext_resource type="Texture2D" uid="uid://cuugsh21742vw" path="res://Assets/Sprites/good_spritesheet.png" id="6_w0fld"]
+[ext_resource type="Script" uid="uid://bmxtfyq0pjfw2" path="res://Scripts/Level/EnemySpawner.gd" id="7_rn1up"]
 [ext_resource type="PackedScene" uid="uid://cfii23lafgj6m" path="res://Assets/Prefabs/Player.tscn" id="8_player"]
+[ext_resource type="SpriteFrames" uid="uid://m7b3hcx8se5e" path="res://Assets/Sprites/Enemies/leapord_frames.tres" id="8_rn1up"]
+[ext_resource type="SpriteFrames" uid="uid://bo5mpdg6dphsj" path="res://Assets/Sprites/Enemies/milk_frames.tres" id="9_1m3u1"]
 [ext_resource type="Script" uid="uid://gqxdtm7sa2p6" path="res://Scripts/Level/VerticalFollowCamera.gd" id="9_camera"]
 [ext_resource type="AudioStream" uid="uid://nubors40p2vb" path="res://Assets/Audio/BGM/new_song.wav" id="10_e38tf"]
+[ext_resource type="SpriteFrames" uid="uid://b15dig7g18one" path="res://Assets/Sprites/Enemies/seal_frames.tres" id="10_oq34n"]
 
 [sub_resource type="WorldBoundaryShape2D" id="LeftWallShape"]
 normal = Vector2(1, 0)
@@ -83,6 +87,14 @@ good_sprite_sheet = ExtResource("6_w0fld")
 [node name="SpawnTimer" type="Timer" parent="ShardSpawner"]
 wait_time = 2.0
 
+[node name="ObstacleSpawner" type="Node" parent="." node_paths=PackedStringArray("camera")]
+script = ExtResource("7_rn1up")
+enemy_sprites = Array[SpriteFrames]([ExtResource("8_rn1up"), ExtResource("9_1m3u1"), ExtResource("10_oq34n")])
+camera = NodePath("../VerticalCamera")
+
+[node name="SpawnTimer" type="Timer" parent="ObstacleSpawner"]
+wait_time = 6.0
+
 [node name="Player" parent="." instance=ExtResource("8_player")]
 position = Vector2(640, 360)
 
@@ -107,9 +119,14 @@ mouse_filter = 2
 
 [node name="BGM" type="AudioStreamPlayer" parent="."]
 stream = ExtResource("10_e38tf")
+volume_db = -30.0
 autoplay = true
+
+[node name="SFX" type="AudioStreamPlayer" parent="."]
+volume_db = -30.0
 
 [connection signal="bad_memory" from="." to="ScreenBackground/MemoryTextSpawner" method="_on_game_level_bad_memory"]
 [connection signal="good_memory" from="." to="ScreenBackground/MemoryTextSpawner" method="_on_game_level_good_memory"]
 [connection signal="timeout" from="FastTimer" to="." method="_on_fast_timer_timeout"]
 [connection signal="timeout" from="ShardSpawner/SpawnTimer" to="ShardSpawner" method="_on_spawn_timer_timeout"]
+[connection signal="timeout" from="ObstacleSpawner/SpawnTimer" to="ObstacleSpawner" method="_on_spawn_timer_timeout"]
